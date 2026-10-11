@@ -4,6 +4,7 @@
   "private": true,
   "main": "index.js",
   "dependencies": {
+    "pinyin-pro": "3.29.4",
     "wx-server-sdk": "3.0.1"
   }
 }

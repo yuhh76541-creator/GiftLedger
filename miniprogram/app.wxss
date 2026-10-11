@@ -8,6 +8,14 @@
 
 button {
   background: initial;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80rpx;
+  padding: 0 22rpx;
+  line-height: 1.35;
+  text-align: center;
 }
 
 button:focus{
@@ -20,8 +28,17 @@ button::after{
 
 
 page {
-  background: #f6f6f6;
+  background: #f6f4ee;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+}
+
+.touchable {
+  transition: transform 150ms ease, opacity 150ms ease, background-color 150ms ease;
+}
+
+.is-pressed {
+  opacity: .78;
+  transform: scale(.985);
 }

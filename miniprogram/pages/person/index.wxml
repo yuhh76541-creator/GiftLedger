@@ -1,0 +1,26 @@
+<view class="page">
+  <view class="heading"><view class="eyebrow">往来明细</view><view class="title">{{personName}}</view><view class="hint">{{scopeLabel}} · {{totalCount}} 笔</view></view>
+  <view class="page-hint">{{archiveScope ? '全部时间包含你自己的其他账本；每笔会标明账本。' : '收礼与实际回礼分别保留，回礼金额不必与原随礼相同。'}}</view>
+  <view wx:if="{{error}}" class="error">{{error}}</view>
+  <view wx:if="{{!entries.length && !loading && !error}}" class="empty">当前条件下没有往来记录</view>
+  <view wx:for="{{entries}}" wx:key="id" class="record-card">
+    <view class="record-body touchable" hover-class="record-pressed" data-id="{{item.id}}" bindtap="startEdit" aria-label="查看并编辑这笔往来">
+      <view class="record-top"><text class="date">{{item.dateLabel}}</text><text class="direction {{item.direction === 'received' ? 'received' : 'given'}}">{{item.directionLabel}}</text></view>
+      <view class="amount {{item.direction === 'received' ? 'received' : 'given'}}">{{item.direction === 'received' ? '+' : '−'}}¥{{item.amountYuan}}</view>
+      <view class="ledger-source">{{item.ledgerName}}</view>
+      <view wx:if="{{item.note}}" class="note">{{item.note}}</view>
+    </view>
+    <view wx:if="{{item.direction === 'received'}}" class="return-info">
+      <text wx:if="{{item.latestReturn}}" class="returned">已回礼 · 最近 ¥{{item.latestReturnYuan}} · {{item.latestReturnDate}}<text wx:if="{{item.returnCount > 1}}">（共 {{item.returnCount}} 笔）</text></text>
+      <text wx:elif="{{item.settled}}" class="legacy-settled">此前标记已结清 · 未登记回礼金额</text>
+      <text wx:else class="pending">待回礼</text>
+      <view class="return-actions"><button class="return-button" data-id="{{item.id}}" bindtap="recordReturn">{{item.returnCount ? '追加回礼' : '记录回礼'}}</button><button class="link-button" data-id="{{item.id}}" bindtap="linkExistingReturn">关联已有</button></view>
+      <view wx:if="{{item.settled && !item.returnCount}}" class="legacy-clear" data-id="{{item.id}}" bindtap="clearLegacySettled">清除旧结清标记</view>
+    </view>
+    <view wx:if="{{item.returnForEntryId}}" class="return-info">已关联原收礼记录 · 回礼金额已保留</view>
+    <view class="record-bottom"><text class="edit-hint">点击记录可编辑 ›</text></view>
+    <view wx:if="{{item.createdByLabel}}" class="creator">由 {{item.createdByLabel}} 添加</view>
+  </view>
+  <view wx:if="{{loading}}" class="foot">加载中…</view>
+  <view wx:elif="{{hasMore && entries.length}}" class="foot touchable" bindtap="loadMore">加载更多明细 ↓</view>
+</view>

@@ -2,16 +2,30 @@
   "pages": [
     "pages/index/index",
     "pages/ledger/index",
-    "pages/example/index"
+    "pages/mine/index",
+    "pages/entry/index",
+    "pages/person/index",
+    "pages/return-link/index"
   ],
   "window": {
-    "backgroundColor": "#F6F6F6",
+    "backgroundColor": "#F6F4EE",
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#F6F6F6",
+    "navigationBarBackgroundColor": "#F6F4EE",
     "navigationBarTitleText": "礼簿·人情记",
     "navigationBarTextStyle": "black"
   },
   "sitemapLocation": "sitemap.json",
+  "tabBar": {
+    "color": "#758278",
+    "selectedColor": "#244e3b",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      { "pagePath": "pages/index/index", "text": "账本", "iconPath": "images/tabbar/books-default.png", "selectedIconPath": "images/tabbar/books-selected.png" },
+      { "pagePath": "pages/ledger/index", "text": "往来", "iconPath": "images/tabbar/records-default.png", "selectedIconPath": "images/tabbar/records-selected.png" },
+      { "pagePath": "pages/mine/index", "text": "我的", "iconPath": "images/tabbar/mine-default.png", "selectedIconPath": "images/tabbar/mine-selected.png" }
+    ]
+  },
   "style": "v2",
   "lazyCodeLoading": "requiredComponents"
 }

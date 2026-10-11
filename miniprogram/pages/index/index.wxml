@@ -1,35 +1,61 @@
 <view class="page">
-  <view class="title">礼簿·人情记</view>
-  <view class="subtitle">记好每一份心意</view>
-
-  <view class="status-row">
-    <text>{{status}}</text>
-    <button class="text-button" size="mini" loading="{{loginLoading}}" bindtap="login">重试登录</button>
+  <view class="hero">
+    <view class="title">礼簿·人情记</view>
+    <view class="subtitle">把每一份心意，记得清清楚楚。</view>
   </view>
-  <view wx:if="{{loginError}}" class="error">{{loginError}}</view>
 
-  <view wx:if="{{openid}}" class="card">
-    <view class="section-title">我的账本</view>
-    <view class="hint">不同场合可以建立不同账本，例如婚礼、满月或日常人情。</view>
+  <view wx:if="{{!openid && !loginError}}" class="connecting">正在连接你的礼簿…</view>
+  <view wx:if="{{loginError}}" class="card">
+    <view class="error">{{loginError}}</view>
+    <button class="quiet-button" loading="{{loginLoading}}" bindtap="login">重新连接</button>
+  </view>
 
-    <view class="create-row">
-      <input class="name-input" value="{{newLedgerName}}" maxlength="30" placeholder="输入账本名称" bindinput="onLedgerNameInput" />
-      <button class="create-button" type="primary" size="mini" loading="{{createLoading}}" disabled="{{createLoading || listLoading}}" bindtap="createLedger">新建</button>
+  <view wx:if="{{openid}}">
+    <view class="current-card">
+      <view class="current-top"><view class="current-label">正在使用</view><view wx:if="{{selectedLedgerName}}" class="current-tag">{{selectedLedgerShared ? '共享账本' : '我的账本'}}</view></view>
+      <view class="current-name">{{selectedLedgerName || '还未选择账本'}}</view>
+      <view wx:if="{{selectedLedgerShared && selectedLedgerOwnerLabel}}" class="current-owner">由 {{selectedLedgerOwnerLabel}} 共享</view>
+      <view class="current-hint">{{selectedLedgerName ? '每笔往来都将记录在这本账簿中' : '在下方创建或选择一本账本，开始记录心意'}}</view>
+      <view wx:if="{{selectedLedgerName && !summaryError && !summaryLoading}}" class="quick-summary">
+        <view><text>收礼</text><text>¥{{summary.receivedYuan}}</text></view>
+        <view><text>送礼</text><text>¥{{summary.givenYuan}}</text></view>
+      </view>
+      <view wx:if="{{selectedLedgerName && summaryLoading}}" class="quick-loading">正在整理账本概览…</view>
+      <view wx:if="{{summaryError}}" class="current-hint">{{summaryError}}</view>
+    </view>
+    <button wx:if="{{selectedLedgerName}}" class="primary-button touchable" hover-class="is-pressed" bindtap="openSelectedLedger">查看往来记录</button>
+
+    <view class="card">
+      <view class="section-heading"><text>我的账本</text><text class="section-count">{{ledgers.length}} 本</text></view>
+      <view class="create-row">
+        <input class="text-input" value="{{newLedgerName}}" maxlength="30" placeholder="例如：婚礼账本" bindinput="onLedgerNameInput" />
+        <button class="small-button touchable" hover-class="is-pressed" loading="{{createLoading}}" disabled="{{createLoading || listLoading || !newLedgerName}}" bindtap="createLedger">新建</button>
+      </view>
+      <view wx:if="{{!ledgers.length && !listLoading}}" class="empty"><view class="empty-symbol">＋</view><view>还没有自己的账本</view><view class="empty-tip">为婚礼、日常等场合分别建一本</view></view>
+      <view wx:for="{{ledgers}}" wx:key="id" class="ledger-row touchable {{selectedLedgerId === item.id ? 'selected' : ''}}" hover-class="is-pressed" data-id="{{item.id}}" bindtap="selectLedger">
+        <view class="ledger-mark">簿</view><text class="ledger-name">{{item.name}}</text><text class="ledger-action">{{selectedLedgerId === item.id ? '✓ 当前' : '选择 ›'}}</text>
+      </view>
+      <view wx:if="{{listLoading}}" class="list-foot">加载中…</view>
+      <view wx:elif="{{hasMore && ledgers.length}}" class="list-foot" bindtap="loadMore">加载更多账本</view>
     </view>
 
+    <view class="card">
+      <view class="section-heading"><text>共享给我的</text><text class="section-count">{{sharedLedgers.length}} 本</text></view>
+      <view wx:if="{{!sharedLedgers.length && !sharedLoading}}" class="empty"><view class="empty-symbol shared-symbol">◇</view><view>还没有加入共享账本</view><view class="empty-tip">收到邀请码后，在下方输入即可加入</view></view>
+      <view wx:for="{{sharedLedgers}}" wx:key="id" class="ledger-row touchable {{selectedLedgerId === item.id ? 'selected' : ''}}" hover-class="is-pressed" data-id="{{item.id}}" bindtap="selectLedger">
+        <view class="ledger-mark shared-mark">共</view><view class="ledger-info"><view class="ledger-name">{{item.name}}</view><view wx:if="{{item.ownerLabel}}" class="ledger-owner">由 {{item.ownerLabel}} 共享</view></view><text class="ledger-action">{{selectedLedgerId === item.id ? '✓ 当前' : '选择 ›'}}</text>
+      </view>
+      <view wx:if="{{sharedLoading}}" class="list-foot">加载中…</view>
+      <view wx:elif="{{sharedHasMore}}" class="list-foot" bindtap="loadSharedMore">加载更多共享账本</view>
+    </view>
+
+    <view class="card">
+      <view class="section-heading">加入共享账本</view>
+      <view class="hint">向账本主人索取 32 位邀请码。</view>
+      <view wx:if="{{!nicknameReady}}" class="hint">加入前请先到“我的”设置昵称。</view>
+      <input class="join-input" value="{{joinCode}}" maxlength="32" placeholder="输入邀请码" bindinput="onJoinCodeInput" />
+      <button class="quiet-button touchable" hover-class="is-pressed" loading="{{joinLoading}}" disabled="{{joinLoading}}" bindtap="joinLedger">加入账本</button>
+    </view>
     <view wx:if="{{listError}}" class="error">{{listError}}</view>
-    <view wx:if="{{!ledgers.length && !listLoading && !listError}}" class="empty">还没有账本，先创建一个吧。</view>
-
-    <view wx:for="{{ledgers}}" wx:key="id" class="ledger-row {{selectedLedgerId === item.id ? 'selected' : ''}}" data-id="{{item.id}}" bindtap="selectLedger">
-      <text class="ledger-name">{{item.name}}</text>
-      <text class="ledger-action">{{selectedLedgerId === item.id ? '当前账本' : '选择'}}</text>
-    </view>
-
-    <view wx:if="{{listLoading}}" class="list-foot">加载中…</view>
-    <view wx:elif="{{hasMore && ledgers.length}}" class="list-foot" bindtap="loadMore">加载更多</view>
   </view>
-
-  <view wx:if="{{selectedLedgerName}}" class="selection">当前账本：{{selectedLedgerName}}</view>
-  <button wx:if="{{selectedLedgerName}}" class="open-button" type="primary" bindtap="openSelectedLedger">进入账本记账</button>
-  <view class="footnote">选择账本后，即可记录收礼与送礼</view>
 </view>

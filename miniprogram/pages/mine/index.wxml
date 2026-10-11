@@ -1,0 +1,100 @@
+<view class="page">
+  <view class="heading"><view class="title">我的</view><view class="subtitle">账户、共享与数据管理</view></view>
+  <view class="identity-card">
+    <view class="avatar">礼</view>
+    <view class="identity-text"><view class="identity-title">{{nickname || (openidSuffix ? '已连接微信' : '正在连接微信…')}}</view><view class="identity-sub">{{openidSuffix ? '账号标识尾号 ' + openidSuffix : '请稍候'}}</view></view>
+  </view>
+  <view wx:if="{{sessionError}}" class="error">{{sessionError}}</view>
+  <view class="account-hint">使用其他微信号时，请在微信中切换账号后重新打开小程序；小程序内无法直接切换微信身份。</view>
+
+  <view class="card">
+    <view class="section-title">我的昵称</view>
+    <view class="hint">设置后，账本主人可在成员列表中通过昵称辨认你。昵称相同时还会显示账号尾号。</view>
+    <view class="nickname-row">
+      <input class="nickname-input" value="{{nicknameDraft}}" maxlength="20" placeholder="设置昵称" bindinput="onNicknameInput" />
+      <button class="nickname-save touchable" hover-class="is-pressed" loading="{{nicknameSaving}}" disabled="{{nicknameSaving || !openidSuffix || !nicknameDirty}}" bindtap="saveNickname">保存</button>
+    </view>
+    <view wx:if="{{nicknameError}}" class="error">{{nicknameError}}</view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">当前账本</view>
+    <view class="current-ledger">{{ledgerName || '尚未选择账本'}}</view>
+    <view wx:if="{{ledgerName}}" class="hint">{{ledgerShared ? '你是共享成员' : '你是账本创建者'}}</view>
+    <view wx:if="{{ledgerOwnerLabel}}" class="hint">由 {{ledgerOwnerLabel}} 共享</view>
+    <button class="quiet-button touchable" hover-class="is-pressed" bindtap="chooseLedger">{{ledgerName ? '切换账本 ›' : '去选择账本 ›'}}</button>
+    <view wx:if="{{ledgerId && !ledgerShared}}" class="ledger-management">
+      <view class="management-label">修改账本名称</view>
+      <view class="rename-row"><input class="rename-input" value="{{ledgerNameDraft}}" maxlength="30" placeholder="输入新名称" bindinput="onLedgerNameDraftInput" /><button class="rename-button touchable" hover-class="is-pressed" loading="{{renameBusy}}" disabled="{{renameBusy || deleteBusy || ledgerNameDraft === ledgerName}}" bindtap="renameLedger">保存名称</button></view>
+      <button class="delete-ledger-button touchable" hover-class="is-pressed" disabled="{{renameBusy || deleteBusy}}" bindtap="openDeleteDialog">删除此账本</button>
+      <view wx:if="{{ledgerManageError && !deleteDialogOpen}}" class="error">{{ledgerManageError}}</view>
+    </view>
+    <view wx:if="{{ledgerId && ledgerShared}}" class="ledger-management">
+      <view class="hint">退出只会取消你自己的访问权限，账本和已添加记录不会被删除。</view>
+      <button class="delete-ledger-button touchable" hover-class="is-pressed" loading="{{leaveBusy}}" disabled="{{leaveBusy}}" bindtap="leaveLedger">退出共享账本</button>
+      <view wx:if="{{ledgerManageError}}" class="error">{{ledgerManageError}}</view>
+    </view>
+  </view>
+
+  <view wx:if="{{ledgerId && !ledgerShared}}" class="card">
+    <view class="section-title">邀请共享</view>
+    <view class="hint">邀请码 24 小时有效。加入者可以查看、添加、修改和删除此账本的记录，请只分享给信任的人。</view>
+    <button class="primary-button touchable" hover-class="is-pressed" loading="{{inviteLoading}}" disabled="{{inviteLoading}}" bindtap="createInvite">＋ 生成邀请码</button>
+    <view wx:if="{{inviteCode}}" class="invite-code" user-select="true">{{inviteCode}}</view>
+    <view wx:if="{{inviteCode}}" class="hint">有效至 {{inviteExpiresAt}}</view>
+    <button wx:if="{{inviteCode}}" class="quiet-button touchable" hover-class="is-pressed" bindtap="copyInvite">复制邀请码</button>
+    <view class="subheading">有效邀请码 <text class="count-tag">{{invites.length}}</text></view>
+    <view class="hint">撤销邀请码不会移除已加入的成员。</view>
+    <view wx:if="{{!invites.length && !inviteListLoading && !inviteHasMore}}" class="empty">当前没有有效邀请码</view>
+    <view wx:for="{{invites}}" wx:key="code" class="management-row">
+      <view class="invite-code" user-select="true">{{item.code}}</view><view class="hint">有效至 {{item.expiresAtLabel}}</view>
+      <view class="management-actions"><view class="management-action touchable" hover-class="is-pressed" data-code="{{item.code}}" bindtap="copyListedInvite">复制</view><view class="management-action danger touchable" hover-class="is-pressed" data-code="{{item.code}}" bindtap="revokeInvite">撤销</view></view>
+    </view>
+    <view wx:if="{{inviteListLoading}}" class="list-foot">加载中…</view>
+    <view wx:elif="{{inviteHasMore}}" class="list-foot touchable" hover-class="is-pressed" bindtap="loadInvitesMore">加载更多邀请码 ↓</view>
+    <view wx:if="{{managementError}}" class="error">{{managementError}}</view>
+  </view>
+
+  <view wx:if="{{ledgerId && !ledgerShared}}" class="card">
+    <view class="section-title">账本成员 <text class="count-tag">{{members.length}}</text></view>
+    <view class="hint">已移除的成员如需重新加入，请在这里点击“恢复”；新邀请码不会自动解除移除状态。</view>
+    <view wx:if="{{!members.length && !memberLoading}}" class="empty">目前没有共享成员</view>
+    <view wx:for="{{members}}" wx:key="id" class="management-row member-row"><view class="member-identity"><text>{{item.label}}</text><text wx:if="{{item.removed}}" class="removed-tag">已移除</text><text wx:if="{{item.left}}" class="removed-tag">已主动退出</text></view><view wx:if="{{!item.left}}" class="management-action touchable {{item.removed ? '' : 'danger'}}" hover-class="is-pressed" data-id="{{item.id}}" bindtap="changeMember">{{item.removed ? '恢复' : '移除'}}</view></view>
+    <view wx:if="{{memberLoading}}" class="list-foot">加载中…</view>
+    <view wx:elif="{{memberHasMore}}" class="list-foot touchable" hover-class="is-pressed" bindtap="loadMembersMore">加载更多成员 ↓</view>
+  </view>
+
+  <view wx:if="{{ledgerId}}" class="card">
+    <view class="section-title">CSV 批量导入</view>
+    <view class="hint">请使用 UTF-8 编码的 CSV，支持列名：日期、收送、往来对象、金额（元）、备注、状态。日期与状态可留空；空日期显示“未知时间”，空状态默认未结清。一次最多 500 笔；导入会新增记录，不自动去重，也不会恢复回礼关联。</view>
+    <button class="quiet-button touchable" hover-class="is-pressed" disabled="{{importing}}" bindtap="chooseImportFile">选择聊天中的 CSV 文件</button>
+    <view wx:if="{{importRowCount}}" class="import-preview">
+      <view class="subheading">{{importFileName}} · {{importRowCount}} 笔</view>
+      <view wx:for="{{importPreview}}" wx:key="index" class="import-preview-row">{{item.dateLabel}} · {{item.directionLabel}} · {{item.personName}} · ¥{{item.amount}}</view>
+      <view class="hint">以上仅预览前 3 笔；确认后将导入到“{{ledgerName}}”。</view>
+      <button class="primary-button touchable" hover-class="is-pressed" loading="{{importing}}" disabled="{{importing}}" bindtap="confirmImport">{{importButtonLabel}}</button>
+    </view>
+    <view wx:if="{{importProgress}}" class="export-progress">{{importProgress}}</view>
+    <view wx:if="{{importError}}" class="error">{{importError}}</view>
+  </view>
+
+  <view wx:if="{{ledgerId}}" class="card">
+    <view class="section-title">导出账本</view>
+    <view class="hint">导出当前账本的全部记录为 CSV，可用表格软件打开。“回礼情况”会区分已登记回礼与旧结清标记；CSV 不包含可恢复的回礼关联，不能代替云端备份。文件不加密，请妥善保管。</view>
+    <button class="quiet-button touchable" hover-class="is-pressed" loading="{{exporting}}" disabled="{{exporting}}" bindtap="exportLedger">生成导出文件</button>
+    <view wx:if="{{exportProgress}}" class="export-progress">{{exportProgress}}</view>
+    <view wx:if="{{exportError}}" class="error">{{exportError}}</view>
+    <button wx:if="{{exportFilePath}}" class="primary-button touchable" hover-class="is-pressed" bindtap="shareExportFile">发送导出文件</button>
+    <button wx:if="{{exportFilePath}}" class="clear-button touchable" hover-class="is-pressed" bindtap="clearExportFile">清除本地导出文件</button>
+  </view>
+  <view wx:if="{{deleteDialogOpen}}" class="delete-mask">
+    <view class="delete-dialog">
+      <view class="delete-title">删除“{{ledgerName}}”？</view>
+      <view class="delete-copy">删除后，账本、记录和共享入口将立即无法访问。云端会暂存原始数据以防误删；建议先导出账本。</view>
+      <view class="delete-prompt">请输入“确认删除账本”</view>
+      <input class="delete-confirm-input" value="{{deleteConfirmText}}" placeholder="在此输入确认文字" maxlength="8" bindinput="onDeleteConfirmInput" />
+      <view wx:if="{{ledgerManageError}}" class="error">{{ledgerManageError}}</view>
+      <view class="delete-actions"><button class="delete-cancel touchable" hover-class="is-pressed" disabled="{{deleteBusy}}" bindtap="closeDeleteDialog">取消</button><button class="delete-confirm touchable" hover-class="is-pressed" loading="{{deleteBusy}}" disabled="{{deleteBusy || deleteConfirmText !== '确认删除账本'}}" bindtap="deleteLedger">确认删除</button></view>
+    </view>
+  </view>
+</view>

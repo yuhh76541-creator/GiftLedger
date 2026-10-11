@@ -1,0 +1,27 @@
+<view class="page">
+  <view class="eyebrow">记入账本 · {{ledgerName}}</view>
+  <view class="title">{{returnForEntryId ? '记录回礼' : editingId ? '编辑往来' : '记一笔往来'}}</view>
+  <view class="subtitle">{{returnForEntryId ? '保存实际回礼金额，并与原随礼关联' : '几步记下这份心意，日后查找更方便'}}</view>
+  <view class="card">
+    <view wx:if="{{returnForEntryId}}" class="return-context">原收礼：{{personName}} · ¥{{receivedAmountYuan}} · {{receivedDate || '未知时间'}}</view>
+    <view class="field-label">往来方向</view>
+    <view wx:if="{{returnForEntryId}}" class="fixed-direction">－ 回礼给对方</view>
+    <view wx:else class="direction-row"><view class="direction-option touchable {{direction === 'received' ? 'active' : ''}}" hover-class="is-pressed" data-direction="received" bindtap="chooseDirection">＋ 收礼</view><view class="direction-option touchable {{direction === 'given' ? 'active' : ''}}" hover-class="is-pressed" data-direction="given" bindtap="chooseDirection">－ 送礼</view></view>
+    <view class="field-label">往来对象 <text class="required">*</text></view>
+    <input class="field-input" value="{{personName}}" maxlength="40" disabled="{{returnForEntryId !== ''}}" placeholder="例如：张先生" bindinput="onPersonNameInput" />
+    <view wx:if="{{returnForEntryId}}"><view class="field-label">回礼记入账本</view><picker range="{{returnLedgerNames}}" value="{{targetLedgerIndex}}" bindchange="onTargetLedgerChange"><view class="field-input date-field touchable">{{returnLedgerNames[targetLedgerIndex] || '正在加载账本…'}}　›</view></picker><view class="field-hint">可选择自己的其他账本；共享账本只可记入当前账本。</view></view>
+    <view class="field-label">金额（元） <text class="required">*</text></view>
+    <view class="amount-wrap"><text class="amount-prefix">¥</text><input class="amount-input" type="digit" value="{{amount}}" placeholder="0.00" bindinput="onAmountInput" /></view>
+    <view class="field-hint">金额须大于 0，最多保留两位小数。</view>
+    <view class="field-label">日期</view>
+    <picker mode="date" value="{{happenedOn || pickerDate}}" bindchange="onDateChange"><view class="field-input date-field touchable" hover-class="is-pressed"><text>{{happenedOn || '未知时间'}}</text><text class="date-arrow">选择 ›</text></view></picker>
+    <view wx:if="{{happenedOn}}" class="clear-date touchable" hover-class="is-pressed" bindtap="clearDate">设为未知时间</view>
+    <view class="field-label">备注（可选）</view>
+    <textarea class="note-input" value="{{note}}" maxlength="200" placeholder="例如：婚礼礼金" bindinput="onNoteInput"></textarea>
+    <view wx:if="{{formError}}" class="error">{{formError}}</view>
+    <button class="save-button touchable" hover-class="is-pressed" loading="{{saving}}" disabled="{{saving || deleting || !ledgerId || !editReady || (returnForEntryId && !returnReady)}}" bindtap="createEntry">{{returnForEntryId ? '保存回礼' : editingId ? '保存修改' : '保存记录'}}</button>
+    <view class="save-hint">保存后会自动返回当前账本的往来记录</view>
+    <button wx:if="{{editingId && linkedReceiptId}}" class="unlink-button touchable" hover-class="is-pressed" loading="{{unlinking}}" disabled="{{saving || deleting || unlinking}}" bindtap="unlinkReturn">解除回礼关联（保留记录）</button>
+    <button wx:if="{{editingId && editReady}}" class="delete-button touchable" hover-class="is-pressed" loading="{{deleting}}" disabled="{{saving || deleting}}" bindtap="deleteEntry">删除这笔记录</button>
+  </view>
+</view>

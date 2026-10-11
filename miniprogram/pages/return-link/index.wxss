@@ -1,0 +1,13 @@
+page { background: #f6f4ee; }
+.page { padding: 28rpx 46rpx 90rpx; color: #223329; }
+.eyebrow, .hint, .date, .ledger, .foot { color: #758278; font-size: 23rpx; }
+.title { margin: 8rpx 0 12rpx; font-size: 48rpx; font-weight: 700; }
+.hint { line-height: 1.5; margin-bottom: 24rpx; }
+.candidate { margin-top: 18rpx; padding: 28rpx; border-radius: 28rpx; background: #fff; }
+.candidate-top { display: flex; justify-content: space-between; align-items: center; gap: 18rpx; }
+.amount { color: #a95d40; font-size: 36rpx; font-weight: 650; }
+.ledger { margin-top: 12rpx; }
+.note { margin-top: 14rpx; color: #46534a; font-size: 24rpx; line-height: 1.5; word-break: break-all; }
+.action { margin-top: 20rpx; color: #244e3b; font-size: 23rpx; }
+.error { margin: 16rpx 0; color: #a95d40; font-size: 24rpx; }
+.empty, .foot { padding: 46rpx 0; text-align: center; line-height: 1.5; }

@@ -1,0 +1,79 @@
+page { background: #f7f5f0; }
+.page { padding: 42rpx 32rpx 96rpx; color: #29352e; }
+.heading { padding: 12rpx 8rpx 28rpx; }
+.eyebrow { color: #7c967f; font-size: 20rpx; letter-spacing: 5rpx; }
+.title { margin-top: 10rpx; font-size: 48rpx; font-weight: 650; }
+.subtitle { margin-top: 8rpx; color: #89948b; font-size: 25rpx; }
+.identity-card { display: flex; align-items: center; gap: 22rpx; padding: 34rpx; border-radius: 24rpx; color: #fff; background: linear-gradient(135deg, #476b55, #61836c); box-shadow: 0 14rpx 30rpx rgba(71,107,85,.15); }
+.avatar { display: flex; align-items: center; justify-content: center; flex: none; width: 88rpx; height: 88rpx; border-radius: 50%; color: #476b55; background: #f2f5ee; font-size: 37rpx; }
+.identity-title { font-size: 30rpx; font-weight: 600; }
+.identity-sub { margin-top: 8rpx; color: #deeadf; font-size: 23rpx; }
+.account-hint { margin: 18rpx 8rpx 28rpx; color: #89948b; font-size: 23rpx; line-height: 1.6; }
+.card { margin-top: 24rpx; padding: 32rpx; border-radius: 24rpx; background: #fff; box-shadow: 0 8rpx 26rpx rgba(43,48,42,.04); }
+.nickname-row { display: flex; gap: 16rpx; margin-top: 24rpx; }
+.nickname-input { box-sizing: border-box; flex: 1; min-width: 0; height: 82rpx; padding: 0 18rpx; border: 1rpx solid #dfe6de; border-radius: 14rpx; background: #fbfcfa; font-size: 27rpx; }
+.nickname-save { flex: none; margin: 0; padding: 0 26rpx; line-height: 82rpx; color: #fff; background: #476b55; font-size: 27rpx; }
+.section-title { font-size: 32rpx; font-weight: 600; }
+.current-ledger { margin-top: 20rpx; font-size: 30rpx; }
+.hint { margin-top: 12rpx; color: #89948b; font-size: 24rpx; line-height: 1.6; }
+.primary-button, .quiet-button { margin-top: 24rpx; font-size: 27rpx; }
+.primary-button { color: #fff; background: #476b55; }
+.quiet-button { color: #476b55; border: 1rpx solid #c9d7ca; background: #f7faf7; }
+.subheading { margin-top: 38rpx; font-size: 28rpx; font-weight: 600; }
+.count-tag { display: inline-block; margin-left: 8rpx; padding: 3rpx 12rpx; border-radius: 20rpx; color: #476b55; background: #eef4ed; font-size: 21rpx; font-weight: 500; vertical-align: middle; }
+.invite-code { margin-top: 20rpx; padding: 18rpx; border-radius: 12rpx; background: #f2f4f0; font-size: 24rpx; word-break: break-all; user-select: text; }
+.management-row { padding: 20rpx 0; border-bottom: 1rpx solid #eef0ec; font-size: 25rpx; }
+.management-actions { display: flex; gap: 12rpx; margin-top: 14rpx; color: #476b55; }
+.management-action { display: flex; align-items: center; justify-content: center; min-width: 82rpx; min-height: 76rpx; padding: 0 12rpx; border-radius: 12rpx; color: #476b55; background: #f4f7f3; font-size: 24rpx; }
+.member-row { display: flex; justify-content: space-between; align-items: center; gap: 18rpx; }
+.member-identity { display: flex; flex-wrap: wrap; align-items: center; gap: 10rpx; min-width: 0; word-break: break-all; }
+.removed-tag { padding: 4rpx 10rpx; border-radius: 8rpx; color: #927b69; background: #f7f2ec; font-size: 21rpx; }
+.management-action.danger { color: #ad5548; background: #fbf4f1; }
+.danger, .clear-button { color: #ad5548; }
+.clear-button { margin-top: 15rpx; }
+.empty, .list-foot { padding: 30rpx 0 6rpx; color: #98a098; font-size: 24rpx; text-align: center; }
+.list-foot.touchable { min-height: 70rpx; color: #476b55; }
+.export-progress { margin-top: 20rpx; color: #476b55; font-size: 25rpx; }
+.error { margin: 20rpx 0; color: #ad5548; font-size: 25rpx; word-break: break-all; }
+
+/* Figma“我的”页：身份卡优先，设置项使用统一圆角与色阶。 */
+page { background: #f6f4ee; }
+.page { padding: 26rpx 46rpx 110rpx; color: #223329; }
+.heading { padding: 0 0 26rpx; }
+.title { margin: 0; font-size: 50rpx; font-weight: 700; }
+.subtitle { margin-top: 6rpx; color: #758278; font-size: 24rpx; }
+.identity-card { padding: 38rpx; border-radius: 42rpx; background: #244e3b; box-shadow: none; }
+.avatar { background: #e6eee6; color: #244e3b; }
+.identity-sub { color: #d9b986; }
+.account-hint { color: #758278; }
+.card { margin-top: 26rpx; padding: 34rpx; border-radius: 35rpx; box-shadow: none; }
+.nickname-input, .invite-code { border: none; border-radius: 19rpx; background: #f6f4ee; }
+.nickname-save { border-radius: 19rpx; background: #e6eee6; color: #244e3b; }
+.nickname-save { height: 82rpx; }
+.hint, .empty, .list-foot { color: #758278; }
+.primary-button { border-radius: 24rpx; background: #244e3b; }
+.quiet-button { border: none; border-radius: 24rpx; background: #e6eee6; color: #244e3b; }
+.count-tag, .management-action { background: #e6eee6; color: #244e3b; }
+.management-row { border-color: #e3e8e1; }
+
+.ledger-management { margin-top: 28rpx; padding-top: 24rpx; border-top: 1rpx solid #e3e8e1; }
+.management-label { color: #758278; font-size: 24rpx; }
+.rename-row { display: flex; gap: 12rpx; margin-top: 14rpx; }
+.rename-input, .delete-confirm-input { box-sizing: border-box; min-width: 0; height: 82rpx; padding: 0 20rpx; border-radius: 18rpx; background: #f6f4ee; font-size: 27rpx; }
+.rename-input { flex: 1; }
+.rename-button { flex: none; min-width: 150rpx; height: 82rpx; margin: 0; padding: 0 16rpx; border-radius: 18rpx; color: #244e3b; background: #e6eee6; font-size: 25rpx; }
+.rename-button[disabled], .delete-confirm[disabled] { opacity: .48; }
+.delete-ledger-button { width: 100%; min-height: 82rpx; margin-top: 22rpx; border-radius: 18rpx; color: #a95d40; background: #fbf0e9; font-size: 26rpx; }
+.delete-mask { position: fixed; inset: 0; z-index: 20; display: flex; align-items: center; justify-content: center; padding: 32rpx; background: rgba(20,37,28,.55); }
+.delete-dialog { box-sizing: border-box; width: 100%; padding: 38rpx; border-radius: 32rpx; background: #fff; }
+.delete-title { color: #223329; font-size: 34rpx; font-weight: 700; }
+.delete-copy { margin-top: 16rpx; color: #758278; font-size: 24rpx; line-height: 1.55; }
+.delete-prompt { margin-top: 26rpx; color: #223329; font-size: 25rpx; font-weight: 600; }
+.delete-confirm-input { width: 100%; margin-top: 14rpx; }
+.delete-actions { display: flex; gap: 16rpx; margin-top: 28rpx; }
+.delete-cancel, .delete-confirm { flex: 1; min-width: 0; min-height: 82rpx; margin: 0; padding: 0 12rpx; border-radius: 18rpx; font-size: 26rpx; }
+.delete-cancel { color: #244e3b; background: #e6eee6; }
+.delete-confirm { color: #fff; background: #a95d40; }
+.import-preview { margin-top: 22rpx; padding: 20rpx; border-radius: 18rpx; background: #f6f4ee; }
+.import-preview .subheading { margin-top: 0; word-break: break-all; }
+.import-preview-row { padding-top: 14rpx; color: #526258; font-size: 23rpx; word-break: break-all; }

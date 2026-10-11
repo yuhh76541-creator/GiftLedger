@@ -1,0 +1,47 @@
+page { background: #f7f5f0; }
+.page { padding: 54rpx 32rpx 90rpx; color: #29352e; }
+.eyebrow { color: #7c967f; font-size: 24rpx; }
+.title { margin-top: 12rpx; font-size: 46rpx; font-weight: 650; }
+.subtitle { margin-top: 8rpx; color: #89948b; font-size: 25rpx; }
+.card { margin-top: 32rpx; padding: 34rpx; border-radius: 24rpx; background: #fff; box-shadow: 0 12rpx 34rpx rgba(43,48,42,.05); }
+.field-label { margin-top: 30rpx; margin-bottom: 12rpx; font-size: 26rpx; font-weight: 600; }
+.field-label:first-child { margin-top: 0; }
+.required { color: #ad5548; }
+.direction-row { display: flex; padding: 6rpx; border-radius: 14rpx; background: #eef2ed; }
+.direction-option { flex: 1; min-height: 52rpx; padding: 18rpx; text-align: center; color: #69776c; font-size: 28rpx; }
+.direction-option.active { border-radius: 11rpx; color: #fff; background: #476b55; }
+.field-input, .note-input { box-sizing: border-box; width: 100%; min-height: 82rpx; padding: 20rpx; border: 1rpx solid #dfe6de; border-radius: 14rpx; background: #fbfcfa; font-size: 28rpx; }
+.amount-wrap { display: flex; align-items: center; box-sizing: border-box; width: 100%; min-height: 82rpx; padding: 0 20rpx; border: 1rpx solid #dfe6de; border-radius: 14rpx; background: #fbfcfa; }
+.amount-prefix { margin-right: 12rpx; color: #476b55; font-size: 34rpx; font-weight: 600; }
+.amount-input { flex: 1; min-width: 0; height: 82rpx; font-size: 30rpx; }
+.date-field { display: flex; align-items: center; justify-content: space-between; color: #29352e; }
+.date-arrow { color: #7c967f; font-size: 24rpx; }
+.note-input { height: 150rpx; }
+.field-hint { margin-top: 9rpx; color: #98a098; font-size: 23rpx; }
+.error { margin-top: 22rpx; color: #ad5548; font-size: 25rpx; word-break: break-all; }
+.save-button { margin-top: 36rpx; color: #fff; background: #476b55; box-shadow: 0 10rpx 24rpx rgba(71,107,85,.18); }
+.save-hint { margin-top: 16rpx; color: #98a098; font-size: 22rpx; text-align: center; }
+.delete-button { min-height: 82rpx; margin-top: 40rpx; border: 1rpx solid #e8d7d2; border-radius: 20rpx; color: #a45445; background: #fff; font-size: 25rpx; line-height: 82rpx; }
+
+/* 表单密度按 Figma 手机画板调整，保存操作紧随表单。 */
+page { background: #f6f4ee; }
+.page { padding: 26rpx 46rpx 80rpx; color: #223329; }
+.eyebrow { color: #758278; font-size: 23rpx; }
+.title { margin-top: 6rpx; font-size: 50rpx; font-weight: 700; }
+.subtitle { margin-top: 6rpx; color: #758278; font-size: 24rpx; }
+.card { margin-top: 30rpx; padding: 36rpx; border-radius: 42rpx; box-shadow: none; }
+.field-label { margin-top: 19rpx; margin-bottom: 10rpx; color: #223329; font-size: 25rpx; }
+.direction-row { border-radius: 20rpx; background: #e6eee6; }
+.direction-option { min-height: 48rpx; padding: 16rpx; color: #758278; }
+.direction-option.active { border-radius: 17rpx; background: #244e3b; }
+.field-input, .note-input, .amount-wrap { border: none; border-radius: 19rpx; background: #f6f4ee; }
+.field-input, .amount-wrap { min-height: 86rpx; }
+.amount-prefix, .date-arrow { color: #244e3b; }
+.field-hint, .save-hint { color: #758278; }
+.note-input { height: 118rpx; }
+.save-button { margin-top: 26rpx; min-height: 92rpx; border-radius: 27rpx; background: #244e3b; box-shadow: none; }
+.delete-button { border-color: #e8d7d2; border-radius: 20rpx; background: #fff; }
+.clear-date { margin-top: 12rpx; color: #758278; font-size: 23rpx; text-align: right; }
+.return-context { padding: 20rpx; border-radius: 18rpx; color: #244e3b; background: #e6eee6; font-size: 24rpx; line-height: 1.5; }
+.fixed-direction { padding: 22rpx; border-radius: 18rpx; color: #a95d40; background: #fbf0e9; font-size: 26rpx; }
+.unlink-button { margin-top: 30rpx; border: 1rpx solid #d7e3d8; border-radius: 20rpx; background: #fff; color: #244e3b; font-size: 24rpx; }

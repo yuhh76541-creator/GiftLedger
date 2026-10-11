@@ -1,0 +1,33 @@
+page { background: #f6f4ee; }
+.page { padding: 28rpx 46rpx 90rpx; color: #223329; }
+.heading { padding-bottom: 22rpx; }
+.eyebrow, .hint { color: #758278; font-size: 23rpx; }
+.title { margin: 8rpx 0; font-size: 48rpx; font-weight: 700; word-break: break-all; }
+.page-hint { margin: 6rpx 0 24rpx; color: #758278; font-size: 23rpx; line-height: 1.5; }
+.record-card { margin-top: 22rpx; padding: 28rpx 32rpx; border-radius: 28rpx; background: #fff; }
+.record-body { border-radius: 14rpx; }
+.record-pressed { background: #f0f5ed; }
+.record-top, .record-bottom { display: flex; justify-content: space-between; gap: 18rpx; }
+.date, .record-bottom, .creator { color: #758278; font-size: 23rpx; }
+.direction { font-size: 23rpx; }
+.received { color: #244e3b; }
+.given { color: #a95d40; }
+.amount { margin-top: 16rpx; font-size: 38rpx; font-weight: 650; font-variant-numeric: tabular-nums; }
+.note { margin-top: 18rpx; padding: 16rpx; border-radius: 14rpx; background: #f6f4ee; font-size: 24rpx; line-height: 1.55; white-space: pre-wrap; word-break: break-all; }
+.record-bottom { margin-top: 24rpx; padding-top: 18rpx; border-top: 1rpx solid #e3e8e1; }
+.settle-label { display: flex; align-items: center; color: #244e3b; font-size: 23rpx; }
+.edit-hint { flex: none; }
+.ledger-source { margin-top: 10rpx; color: #758278; font-size: 22rpx; }
+.return-info { margin-top: 20rpx; color: #758278; font-size: 23rpx; line-height: 1.4; }
+.return-info text { min-width: 0; }
+.returned { color: #244e3b; }
+.pending { color: #a95d40; }
+.legacy-settled { color: #758278; }
+.return-actions { box-sizing: border-box; display: flex; width: 100%; gap: 12rpx; margin-top: 14rpx; }
+.return-actions button { box-sizing: border-box; flex: 1 1 0; width: 0; min-width: 0; max-width: 100%; min-height: 66rpx; margin: 0; padding: 0 10rpx; border-radius: 15rpx; font-size: 22rpx; line-height: 1.25; white-space: normal; }
+.return-button { background: #244e3b; color: #fff; }
+.link-button { border: 1rpx solid #d7e3d8; background: #fff; color: #244e3b; }
+.legacy-clear { margin-top: 12rpx; color: #758278; font-size: 22rpx; text-align: right; text-decoration: underline; }
+.creator { margin-top: 12rpx; word-break: break-all; }
+.empty, .foot { padding: 50rpx 0; color: #758278; text-align: center; font-size: 24rpx; }
+.error { margin-top: 20rpx; color: #a95d40; font-size: 24rpx; }

@@ -1,46 +1,50 @@
 <view class="page">
-  <view class="title">{{ledgerName}}</view>
-  <view class="subtitle">记录每一笔收礼与送礼</view>
-
-  <view class="card">
-    <view class="section-title">新增记录</view>
-    <view class="direction-row">
-      <view class="direction-option {{direction === 'received' ? 'active' : ''}}" data-direction="received" bindtap="chooseDirection">收礼</view>
-      <view class="direction-option {{direction === 'given' ? 'active' : ''}}" data-direction="given" bindtap="chooseDirection">送礼</view>
-    </view>
-
-    <view class="field-label">往来对象</view>
-    <input class="field-input" value="{{personName}}" maxlength="40" placeholder="例如：张先生" bindinput="onPersonNameInput" />
-
-    <view class="field-label">金额（元）</view>
-    <input class="field-input" type="digit" value="{{amount}}" placeholder="例如：500.00" bindinput="onAmountInput" />
-
-    <view class="field-label">日期</view>
-    <picker mode="date" value="{{happenedOn}}" bindchange="onDateChange">
-      <view class="field-input date-field">{{happenedOn}}</view>
-    </picker>
-
-    <view class="field-label">备注（可选）</view>
-    <textarea class="note-input" value="{{note}}" maxlength="200" placeholder="例如：婚礼礼金" bindinput="onNoteInput"></textarea>
-
-    <button class="save-button" type="primary" loading="{{saving}}" disabled="{{saving || listLoading}}" bindtap="createEntry">保存记录</button>
+  <view class="heading"><view class="title">往来记录</view><view class="subtitle">{{ledgerName ? ledgerName + ' · 每笔心意都有迹可循' : '先选择一本账本，开始记录心意'}}</view></view>
+  <view wx:if="{{sessionError}}" class="error">{{sessionError}}</view>
+  <view wx:if="{{!ledgerId}}" class="card empty-card">
+    <view class="empty-title">先选择一本账本</view>
+    <view class="empty-copy">选择后，这里会显示该账本的所有收礼与送礼记录。</view>
+    <button class="primary-button" bindtap="chooseLedger">去账本页</button>
   </view>
-
-  <view class="card records-card">
-    <view class="section-title">往来记录</view>
-    <view wx:if="{{error}}" class="error">{{error}}</view>
-    <view wx:if="{{!entries.length && !listLoading && !error}}" class="empty">这个账本还没有记录。</view>
-    <view wx:for="{{entries}}" wx:key="id" class="entry-row">
-      <view class="entry-main">
-        <text class="entry-person">{{item.personName}}</text>
-        <text class="entry-date">{{item.happenedOn}}</text>
+  <view wx:else>
+    <view class="ledger-switch touchable" hover-class="is-pressed" bindtap="chooseLedger"><view><text class="switch-label">当前账本</text><text class="switch-name">{{ledgerName}}</text></view><text class="switch-action">切换 ›</text></view>
+    <view wx:if="{{ledgerOwnerLabel}}" class="shared-owner">由 {{ledgerOwnerLabel}} 共享</view>
+    <view class="card filter-card">
+      <view class="section-title">查找往来</view>
+      <view class="filter-tabs">
+        <view class="filter-tab touchable {{filterMode === 'all' ? 'active' : ''}}" hover-class="is-pressed" data-mode="all" bindtap="chooseFilterMode">全部</view>
+        <view class="filter-tab touchable {{filterMode === 'day' ? 'active' : ''}}" hover-class="is-pressed" data-mode="day" bindtap="chooseFilterMode">按日</view>
+        <view class="filter-tab touchable {{filterMode === 'month' ? 'active' : ''}}" hover-class="is-pressed" data-mode="month" bindtap="chooseFilterMode">按月</view>
       </view>
-      <view class="entry-side">
-        <text class="entry-amount {{item.direction === 'received' ? 'received' : 'given'}}">{{item.directionLabel}} ¥{{item.amountYuan}}</text>
-        <text wx:if="{{item.note}}" class="entry-note">{{item.note}}</text>
+      <picker wx:if="{{filterMode !== 'all'}}" mode="date" fields="{{filterMode === 'month' ? 'month' : 'day'}}" value="{{filterDateLabel}}" bindchange="onFilterDateChange"><view class="date-select touchable" hover-class="is-pressed"><text>{{filterMode === 'day' ? '查看日期' : '查看月份'}}</text><text>{{filterDateLabel}}　›</text></view></picker>
+      <view class="search-row"><input class="search-input" value="{{searchDraft}}" maxlength="40" placeholder="姓名或拼音" confirm-type="search" bindinput="onSearchInput" bindconfirm="applySearch" /><button class="search-button touchable" hover-class="is-pressed" bindtap="applySearch">搜索</button></view>
+      <view wx:if="{{searchName}}" class="search-active">正在查找“{{searchName}}”<text class="clear-search touchable" hover-class="is-pressed" bindtap="clearSearch">清除</text></view>
+    </view>
+    <view class="card summary-card">
+      <view class="section-title">{{filterMode === 'all' && !searchName ? '账本概览' : '筛选统计'}}</view>
+      <view wx:if="{{summaryError}}" class="error">{{summaryError}}</view>
+      <view wx:elif="{{summaryLoading}}" class="summary-placeholder"><view class="skeleton short"></view><view class="skeleton wide"></view></view>
+      <view wx:else class="summary-grid">
+        <view class="summary-item"><text class="summary-label">收礼 · {{summary.receivedCount}} 笔</text><text class="summary-value received">¥{{summary.receivedYuan}}</text></view>
+        <view class="summary-item"><text class="summary-label">送礼 · {{summary.givenCount}} 笔</text><text class="summary-value given">¥{{summary.givenYuan}}</text></view>
       </view>
     </view>
-    <view wx:if="{{listLoading}}" class="list-foot">加载中…</view>
-    <view wx:elif="{{hasMore && entries.length}}" class="list-foot" bindtap="loadMore">加载更多</view>
+    <view class="record-heading"><text>往来对象</text><text class="record-count">{{summaryError ? '—' : summaryLoading || listLoading ? '更新中' : totalCount + ' 笔 · ' + groupCount + ' 人'}}</text></view>
+    <view class="card records-card">
+      <view wx:if="{{listError}}" class="error">{{listError}}</view>
+      <view wx:if="{{!entries.length && listLoading}}" class="loading-records"><view class="skeleton wide"></view><view class="skeleton medium"></view><view class="skeleton wide"></view></view>
+      <view wx:if="{{!entries.length && !listLoading && !listError}}" class="empty"><view class="empty-symbol">{{filterMode !== 'all' || searchName ? '⌕' : '＋'}}</view><view class="empty-title">{{filterMode !== 'all' || searchName ? '没有找到符合条件的记录' : '还没有往来记录'}}</view><view class="empty-copy">{{filterMode !== 'all' || searchName ? '换个日期或姓名再试试。' : '从第一笔收礼或送礼开始，慢慢记好每份心意。'}}</view><button wx:if="{{filterMode === 'all' && !searchName}}" class="empty-add touchable" hover-class="is-pressed" bindtap="addEntry">记下第一笔</button></view>
+      <view wx:for="{{entries}}" wx:key="personName" class="entry-row touchable" hover-class="entry-row-pressed" data-name="{{item.personName}}" bindtap="openPerson" aria-label="查看与{{item.personName}}的往来明细">
+        <view class="entry-top"><text class="entry-person">{{item.personName}}</text><text wx:if="{{item.receivedCount}}" class="status-badge {{item.pendingCount ? 'status-pending' : 'status-returned'}}">{{item.pendingCount ? '待回礼 ' + item.pendingCount + ' 笔' : item.unpricedCount ? '已标记结清' : '已回礼'}}</text></view>
+        <view wx:if="{{item.latestReceived}}" class="person-fact"><text>本账本最近收礼</text><text class="received">¥{{item.receivedAmountYuan}} · {{item.receivedOnLabel}}</text></view>
+        <view wx:if="{{item.latestReturn}}" class="person-fact"><text>最近回礼</text><text class="given">¥{{item.returnAmountYuan}} · {{item.returnOnLabel}}</text></view>
+        <view wx:elif="{{item.receivedCount}}" class="person-fact"><text>回礼情况</text><text>{{item.unpricedCount ? '旧标记未填回礼金额' : '尚未登记回礼'}}</text></view>
+        <view wx:if="{{!item.receivedCount}}" class="person-fact"><text>最近一笔 · {{item.latestDirectionLabel}}</text><text class="{{item.latest.direction === 'received' ? 'received' : 'given'}}">¥{{item.latestAmountYuan}} · {{item.latestOnLabel}}</text></view>
+        <view class="entry-footer"><text class="entry-creator">本账本共 {{item.count}} 笔往来</text><text class="entry-open">查看明细 ›</text></view>
+      </view>
+      <view wx:if="{{listLoading && entries.length}}" class="list-foot">加载更多记录…</view>
+      <view wx:elif="{{hasMore && entries.length}}" class="list-foot" bindtap="loadMore">加载更多</view>
+    </view>
+    <button wx:if="{{entries.length || listError}}" class="floating-add touchable" hover-class="is-pressed" bindtap="addEntry">＋ 记一笔</button>
   </view>
 </view>

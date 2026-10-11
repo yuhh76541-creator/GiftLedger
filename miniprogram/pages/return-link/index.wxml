@@ -1,0 +1,15 @@
+<view class="page">
+  <view class="eyebrow">{{personName}} · 收礼关联</view>
+  <view class="title">选择已有送礼</view>
+  <view class="hint">仅列出同一往来对象、尚未关联的送礼。选择后不会再新增一笔。</view>
+  <view wx:if="{{error}}" class="error">{{error}}</view>
+  <view wx:if="{{!candidates.length && !loading && !error}}" class="empty">没有可关联的送礼记录。可返回明细，点击“记录回礼”。</view>
+  <view wx:for="{{candidates}}" wx:key="id" class="candidate touchable" data-id="{{item.id}}" bindtap="chooseCandidate">
+    <view class="candidate-top"><text class="amount">¥{{item.amountYuan}}</text><text class="date">{{item.dateLabel}}</text></view>
+    <view class="ledger">{{item.ledgerName}}</view>
+    <view wx:if="{{item.note}}" class="note">{{item.note}}</view>
+    <view class="action">点此关联为回礼 ›</view>
+  </view>
+  <view wx:if="{{loading}}" class="foot">加载中…</view>
+  <view wx:elif="{{hasMore && candidates.length}}" class="foot" bindtap="loadMore">加载更多 ↓</view>
+</view>

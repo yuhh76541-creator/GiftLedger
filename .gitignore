@@ -5,6 +5,7 @@ project.private.config.json
 node_modules/
 miniprogram_npm/
 dist/
+work/
 
 # 本机密钥和临时文件
 .env
