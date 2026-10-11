@@ -1,0 +1,134 @@
+page {
+  background: #f7f5f0;
+}
+
+.page {
+  padding: 54rpx 36rpx 80rpx;
+  color: #2b302a;
+}
+
+.title {
+  font-size: 48rpx;
+  font-weight: 600;
+}
+
+.subtitle {
+  margin-top: 10rpx;
+  color: #73796f;
+  font-size: 26rpx;
+}
+
+.card {
+  margin-top: 36rpx;
+  padding: 34rpx;
+  border-radius: 20rpx;
+  background: #fff;
+}
+
+.section-title {
+  font-size: 34rpx;
+  font-weight: 600;
+}
+
+.direction-row {
+  display: flex;
+  margin-top: 28rpx;
+  border-radius: 12rpx;
+  background: #eef2ed;
+  padding: 6rpx;
+}
+
+.direction-option {
+  flex: 1;
+  padding: 16rpx;
+  text-align: center;
+  color: #69776c;
+  font-size: 28rpx;
+}
+
+.direction-option.active {
+  border-radius: 10rpx;
+  background: #476b55;
+  color: #fff;
+}
+
+.field-label {
+  margin-top: 30rpx;
+  margin-bottom: 12rpx;
+  font-size: 26rpx;
+}
+
+.field-input, .note-input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 74rpx;
+  padding: 18rpx;
+  border: 1rpx solid #d9ded6;
+  border-radius: 10rpx;
+  font-size: 28rpx;
+}
+
+.date-field {
+  color: #2b302a;
+}
+
+.note-input {
+  height: 140rpx;
+}
+
+.save-button {
+  margin-top: 32rpx;
+  background: #476b55;
+}
+
+.records-card {
+  margin-top: 30rpx;
+}
+
+.entry-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 18rpx;
+  padding: 28rpx 0;
+  border-bottom: 1rpx solid #edf0ec;
+}
+
+.entry-main, .entry-side {
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+}
+
+.entry-side {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.entry-person, .entry-amount {
+  font-size: 28rpx;
+}
+
+.entry-amount.received {
+  color: #356e46;
+}
+
+.entry-amount.given {
+  color: #a95a3f;
+}
+
+.entry-date, .entry-note, .empty, .list-foot {
+  color: #8b9088;
+  font-size: 24rpx;
+}
+
+.empty, .list-foot {
+  padding: 36rpx 0 8rpx;
+  text-align: center;
+}
+
+.error {
+  margin-top: 22rpx;
+  color: #b34435;
+  font-size: 25rpx;
+  word-break: break-all;
+}

@@ -1,0 +1,16 @@
+# 微信开发者工具的本机配置
+project.private.config.json
+
+# 安装生成的依赖与构建产物
+node_modules/
+miniprogram_npm/
+dist/
+
+# 本机密钥和临时文件
+.env
+.env.*
+*.log
+*.pem
+*.key
+.DS_Store
+Thumbs.db

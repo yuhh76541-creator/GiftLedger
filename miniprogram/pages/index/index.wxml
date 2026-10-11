@@ -1,0 +1,35 @@
+<view class="page">
+  <view class="title">礼簿·人情记</view>
+  <view class="subtitle">记好每一份心意</view>
+
+  <view class="status-row">
+    <text>{{status}}</text>
+    <button class="text-button" size="mini" loading="{{loginLoading}}" bindtap="login">重试登录</button>
+  </view>
+  <view wx:if="{{loginError}}" class="error">{{loginError}}</view>
+
+  <view wx:if="{{openid}}" class="card">
+    <view class="section-title">我的账本</view>
+    <view class="hint">不同场合可以建立不同账本，例如婚礼、满月或日常人情。</view>
+
+    <view class="create-row">
+      <input class="name-input" value="{{newLedgerName}}" maxlength="30" placeholder="输入账本名称" bindinput="onLedgerNameInput" />
+      <button class="create-button" type="primary" size="mini" loading="{{createLoading}}" disabled="{{createLoading || listLoading}}" bindtap="createLedger">新建</button>
+    </view>
+
+    <view wx:if="{{listError}}" class="error">{{listError}}</view>
+    <view wx:if="{{!ledgers.length && !listLoading && !listError}}" class="empty">还没有账本，先创建一个吧。</view>
+
+    <view wx:for="{{ledgers}}" wx:key="id" class="ledger-row {{selectedLedgerId === item.id ? 'selected' : ''}}" data-id="{{item.id}}" bindtap="selectLedger">
+      <text class="ledger-name">{{item.name}}</text>
+      <text class="ledger-action">{{selectedLedgerId === item.id ? '当前账本' : '选择'}}</text>
+    </view>
+
+    <view wx:if="{{listLoading}}" class="list-foot">加载中…</view>
+    <view wx:elif="{{hasMore && ledgers.length}}" class="list-foot" bindtap="loadMore">加载更多</view>
+  </view>
+
+  <view wx:if="{{selectedLedgerName}}" class="selection">当前账本：{{selectedLedgerName}}</view>
+  <button wx:if="{{selectedLedgerName}}" class="open-button" type="primary" bindtap="openSelectedLedger">进入账本记账</button>
+  <view class="footnote">选择账本后，即可记录收礼与送礼</view>
+</view>
